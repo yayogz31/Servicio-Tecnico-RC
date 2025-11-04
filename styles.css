@@ -28,11 +28,9 @@ section {
     padding: 5rem 0;
 }
 
-
 [id] {
-    scroll-margin-top: 80px; 
+    scroll-margin-top: 80px;
 }
-
 
 h2 {
     font-size: 2.5rem;
@@ -54,10 +52,14 @@ h2 {
     width: 1px;
     height: 1px;
     padding: 0;
-    margin: -1px;
+    margin: 2px;
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     border: 0;
+}
+
+.sr-only .consulta {
+    padding: 20px;
 }
 
 /* --- ESTILOS PARA IMÁGENES  --- */
@@ -151,7 +153,7 @@ h2 {
     display: flex;
     align-items: center;
     position: relative;
-    overflow: hidden; 
+    overflow: hidden;
 }
 
 .hero-overlay {
@@ -165,7 +167,7 @@ h2 {
     z-index: 2;
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 2fr; 
+    grid-template-columns: 1fr 2fr;
     align-items: center;
     gap: 3rem;
 }
@@ -228,20 +230,20 @@ h2 {
 
 .hero-image-gallery {
     display: flex;
-    flex-direction: row; 
+    flex-direction: row;
     gap: 1rem;
     width: 100%;
 }
 
 .hero-image-gallery .gallery-image {
-    flex: 1; 
-    height: 250px; 
+    flex: 1;
+    height: 250px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
 }
 
 .hero-image-gallery .gallery-image:hover {
-    transform: scale(1.05) translateY(-5px); 
+    transform: scale(1.05) translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
@@ -484,25 +486,47 @@ h2 {
     text-align: left;
 }
 
+/* ESTILOS UNIFICADOS PARA LOS CAMPOS DEL FORMULARIO */
 .contact-form input,
+.contact-form select,
 .contact-form textarea {
     width: 100%;
-    padding: 0.9rem;
+    padding: 15px;
     margin-bottom: 1rem;
-    border: 1px solid #000;
+    border: 1px solid #555;
     border-radius: 5px;
     font-family: 'Roboto', sans-serif;
     font-size: 1rem;
+    background-color: #f0f0f0;
+    color: #333;
+    box-sizing: border-box;
+}
+
+/* ESTILOS PARA QUE EL SELECT SE VEA COMO UN INPUT */
+.contact-form select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23333' class='bi bi-chevron-down' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 16px;
+}
+
+/* COLOR DE PLACEHOLDER PARA EL SELECT */
+.contact-form select:invalid {
+    color: #6c757d;
 }
 
 .contact-form textarea {
-    resize: none;
+    resize: vertical;
+    min-height: 120px;
 }
 
 .submit-button {
     background-color: #48e;
     color: #fff;
-    padding: 0.9rem;
+    padding: 1rem;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -533,11 +557,13 @@ h2 {
 .contact-details strong {
     color: #fff;
 }
+
 .contact-details a {
     color: #fff;
     text-decoration: none;
     transition: color 0.3s ease;
 }
+
 .contact-details a:hover {
     color: #ffff00;
 }
@@ -597,7 +623,7 @@ h2 {
     h2 {
         font-size: 2.2rem;
     }
-    
+
     .hero-container {
         grid-template-columns: 1fr;
         text-align: center;
@@ -605,7 +631,8 @@ h2 {
     .hero-content {
         text-align: center;
     }
-    .hero-content h1, .hero-content p {
+    .hero-content h1,
+    .hero-content p {
         text-align: center;
     }
     .hero-image-wrapper {
@@ -615,14 +642,15 @@ h2 {
     .solutions-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .experience-container,
     .contact-container {
         grid-template-columns: 1fr;
         gap: 3rem;
     }
 
-    .experience-content-left h2, .brands-subtitle {
+    .experience-content-left h2,
+    .brands-subtitle {
         text-align: center;
     }
     .experience-content-left p {
