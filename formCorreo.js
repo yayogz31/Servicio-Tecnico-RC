@@ -1,97 +1,78 @@
+/* === CÓDIGO formCorreo.js CON EMAILJS === */
+
+// 1. Inicializa EmailJS con tu Llave Pública
+// Pega tu Public Key (antes llamada User ID) aquí
+(function() {
+    emailjs.init({
+      publicKey: "99ypAWhI5clRILcmr",
+    });
+})();
+
+// 2. Espera a que todo el HTML esté cargado
 document.addEventListener('DOMContentLoaded', () => {
 
+    // 3. Busca tu formulario por su ID
     const miFormulario = document.getElementById('info_cliente');
 
     if (miFormulario) {
-        console.log('Formulario encontrado con éxito:', miFormulario);
+        console.log('Formulario encontrado. Listo para enviar con EmailJS.');
     } else {
         console.error('¡ERROR! No se pudo encontrar el formulario con id "info_cliente"');
-        return; 
+        return;
     }
 
+    // 4. Añade el "escuchador"
     miFormulario.addEventListener('submit', (evento) => {
         
+        // 5. CANCELAMOS la recarga de la página
         evento.preventDefault(); 
         
-        console.log('Formulario interceptado. Generando HTML del correo...');
-
-        const nombre = document.getElementById('fullName').value;
-        const apellido = document.getElementById('lastName').value;
-        const tipoConsulta = document.getElementById('consultaTipo').value;
-        const marca = document.getElementById('marcaModelo').value;
-        const email = document.getElementById('email').value;
-        const telefono = document.getElementById('phone').value;
-        const mensaje = document.getElementById('problemDescription').value;
-
-        const htmlParaCorreo = `
-        <html>
-        <head>
-          <style>
-            body { 
-              font-family: Arial, sans-serif; 
-              line-height: 1.6; 
-              color: #333;
-            }
-            .container { 
-              width: 90%; 
-              margin: 20px auto; 
-              padding: 20px; 
-              border: 1px solid #ddd; 
-              border-radius: 10px; 
-            }
-            .header { 
-              font-size: 24px; 
-              color: #031926; /* Color oscuro de tu web */
-            }
-            .data-label {
-              font-weight: bold;
-              color: #555;
-              min-width: 150px; /* Alinea los datos */
-              display: inline-block;
-            }
-            .mensaje-bloque {
-                background-color: #f9f9f9;
-                border: 1px solid #eee;
-                padding: 15px;
-                border-radius: 5px;
-                margin-top: 15px;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <h1 class="header">Nueva Solicitud de Servicio Web</h1>
-            <p>Se ha recibido un nuevo formulario de contacto desde el sitio web.</p>
-            
-            <hr>
-            
-            <h3>Detalles del Cliente:</h3>
-            <p><span class="data-label">Nombre Completo:</span> ${nombre} ${apellido}</p>
-            <p><span class="data-label">Email:</span> ${email}</p>
-            <p><span class="data-label">Teléfono:</span> ${telefono}</p>
-            
-            <h3>Detalles de la Solicitud:</h3>
-            <p><span class="data-label">Tipo de Consulta:</span> ${tipoConsulta}</p>
-            <p><span class="data-label">Marca y Modelo:</span> ${marca}</p>
-            
-            <div class="mensaje-bloque">
-              <strong>Descripción del Problema:</strong>
-              <p>${mensaje}</p>
-            </div>
-            
-          </div>
-        </body>
-        </html>
-        `;
-
-        console.log('--- HTML GENERADO ---');
-        console.log(htmlParaCorreo);
-        console.log('--- FIN DEL HTML ---');
+        console.log('Formulario interceptado. Enviando a EmailJS...');
         
-        alert('¡Solicitud recibida! (HTML generado en consola F12)');
+        // Deshabilita el botón de envío para evitar clics duplicados
+        const submitButton = miFormulario.querySelector('.submit-button');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Enviando...';
 
-        miFormulario.reset();
+        // 6. Crea el objeto de "parámetros"
+        // Las llaves (ej. 'nombre', 'apellido') DEBEN coincidir
+        // con las variables de tu plantilla de EmailJS (ej. {{nombre}})
+        const params = {
+            nombre: document.getElementById('fullName').value,
+            apellido: document.getElementById('lastName').value,
+            tipoConsulta: document.getElementById('consultaTipo').value,
+            marca: document.getElementById('marcaModelo').value,
+            email: document.getElementById('email').value,
+            telefono: document.getElementById('phone').value,
+            mensaje: document.getElementById('problemDescription').value
+        };
 
+        // 7. Usa la función .send() de EmailJS
+        // Pega tu Service ID y tu Template ID aquí
+        emailjs.send("service_k4t018s", "template_6l3b0sq", params)
+            .then(
+                (response) => {
+                    // Éxito
+                    console.log('ÉXITO!', response.status, response.text);
+                    alert('¡Solicitud enviada con éxito! Nos pondremos en contacto contigo a la brevedad.');
+                    
+                    // Limpia el formulario y restaura el botón
+                    miFormulario.reset();
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Enviar Solicitud';
+                },
+                (error) => {
+                    // Error
+                    console.log('FALLÓ...', error);
+                    alert('Hubo un error al enviar la solicitud. Por favor, inténtalo de nuevo o contáctanos directamente.');
+                    
+                    // Restaura el botón para que el usuario pueda reintentar
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Enviar Solicitud';
+                }
+            );
+
+        // 8. Seguridad extra para evitar la recarga
         return false;
     });
 });
